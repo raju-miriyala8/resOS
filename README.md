@@ -20,13 +20,24 @@ RESOS is a restaurant operations and QR-ordering application. Restaurant staff m
 
 The frontend and backend are separate applications. The React app sends HTTP requests to the Express API, which handles authentication and restaurant data in MongoDB.
 
+## Run with Docker
+
+Install Docker Desktop, copy `.env.example` to `.env`, and replace `JWT_SECRET` with a long, private value. Then run `docker compose up --build` from the project folder and open `http://localhost:8080`. Compose starts MongoDB, the API, and the frontend together. The frontend forwards API requests internally, so the browser and table QR codes use the same address.
+
+The default Compose setup uses a local MongoDB container and keeps its data in a Docker volume. To use MongoDB Atlas instead, set `MONGODB_URL` in the local `.env` file. Never commit `.env`; it is ignored by Git.
+
+If Docker Desktop reports an invalid file request while building from a OneDrive-synced folder, clone the GitHub repository into a local folder outside OneDrive (for example, `C:\resOS`) and run Compose there.
+
 ## Project structure
 
 - `frontend/` — Customer menu, sign-in pages, and Owner, Manager, and Kitchen screens.
 - `backend/` — Express server, routes, controllers, models, middleware, and services.
+- `docker-compose.yml` — Local services for MongoDB, the API, and the frontend.
 
 ## Current scope
 
 RESOS supports the main menu, table, QR-ordering, and kitchen workflow. Online payments are not implemented; customers settle the bill with restaurant staff. Platform-admin screens are placeholders, and sales-revenue and attendance reporting depend on backend APIs that are not currently available.
 
 Redis, background job queues, load balancing, and microservices are possible future improvements; they are not part of the current application.
+
+The Docker setup is for local development and demonstration. A public AWS deployment still needs hosting, HTTPS, secure production environment variables, and a production database configuration.
